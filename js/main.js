@@ -122,7 +122,7 @@
       .to('.loader__panel--1', { yPercent: -100, duration: 1.1, ease: 'expo.inOut' }, '-=0.1')
       .to('.loader__panel--2', { yPercent: 100, duration: 1.1, ease: 'expo.inOut' }, '<')
       .add(() => window.Hero3D && Hero3D.build(), '<0.1')
-      .from('.hero__word', { yPercent: 115, rotate: 4, duration: 1.4, ease: 'expo.out', stagger: 0.12 }, '<0.35')
+      .from('.hero__word', { yPercent: 115, rotate: 4, duration: 1.4, ease: 'expo.out', stagger: 0.12, onComplete: () => $('.hero__title').classList.add('is-revealed') }, '<0.35')
       .from(['.hero .eyebrow', '.hero__lead', '.hero__actions', '.hero__caption', '.hero__corner', '.hero__scroll'], { opacity: 0, y: 24, duration: 1, ease: 'power3.out', stagger: 0.08 }, '<0.3')
       .add(() => document.querySelector('.nav').classList.add('is-in'), '<');
   }
@@ -224,9 +224,10 @@
     for (let i = 0; i < 2; i++) row.appendChild(track.cloneNode(true));
     const tracks = $$('.marquee__track', row);
     const dir = +row.dataset.dir;
-    let x = 0, boost = 0;
+    let x = 0, boost = 0, w = tracks[0].offsetWidth;
+    // cache the track width instead of reading layout every frame
+    new ResizeObserver(() => (w = tracks[0].offsetWidth)).observe(tracks[0]);
     gsap.ticker.add((t, dt) => {
-      const w = tracks[0].offsetWidth;
       if (!w) return;
       const v = lenis ? lenis.velocity : 0;
       boost += (Math.abs(v) * 0.12 - boost) * 0.1;

@@ -4,13 +4,15 @@
   if (!canvas || !window.THREE) return;
   const P = window.PLAN;
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // phones get a lighter render: lower pixel ratio, smaller shadow map, ~30fps
+  const lite = matchMedia('(max-width: 860px), (pointer: coarse)').matches;
 
   let renderer;
   try {
     renderer = new THREE.WebGLRenderer({ canvas, antialias: true, powerPreference: 'high-performance' });
   } catch (e) { document.documentElement.classList.add('no-webgl'); return; }
 
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, lite ? 1.5 : 2));
   renderer.outputEncoding = THREE.sRGBEncoding;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 0.92;
@@ -29,7 +31,7 @@
   const sun = new THREE.DirectionalLight(0xffd6a0, 1.9);
   sun.position.set(-38, 62, 26);
   sun.castShadow = true;
-  sun.shadow.mapSize.set(2048, 2048);
+  sun.shadow.mapSize.set(lite ? 1024 : 2048, lite ? 1024 : 2048);
   Object.assign(sun.shadow.camera, { left: -48, right: 48, top: 48, bottom: -48, near: 1, far: 200 });
   sun.shadow.bias = -0.0006;
   sun.shadow.normalBias = 0.02;
@@ -202,9 +204,9 @@
     // shift the model to the right on wide screens so the headline has room
     camera.filmOffset = w > 860 ? -6 : 0;
     // on portrait screens, push the model into the upper half above the headline
-    if (camera.aspect < 1) camera.setViewOffset(w, h, 0, h * 0.2, w, h); else camera.clearViewOffset();
+    if (camera.aspect < 1) camera.setViewOffset(w, h, 0, h * (camera.aspect < 0.6 ? 0.2 : 0.1), w, h); else camera.clearViewOffset();
     camera.updateProjectionMatrix();
-    state.fit = camera.aspect < 1 ? 0.78 / Math.max(camera.aspect, 0.4) : 1;
+    state.fit = camera.aspect < 1 ? Math.max(1.3, 0.78 / Math.max(camera.aspect, 0.4)) : 1;
   }
   layout();
   window.addEventListener('resize', layout);
@@ -221,6 +223,7 @@
   function frame(now) {
     requestAnimationFrame(frame);
     if (!visible) return;
+    if (lite && now - last < 30) return;
     const dt = Math.min((now - last) / 1000, 0.05);
     last = now;
     state.mx += (state.tx - state.mx) * 0.045;

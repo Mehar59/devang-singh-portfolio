@@ -15,7 +15,8 @@
   try { renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true }); }
   catch (e) { return fallback(); }
 
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  const lite = matchMedia('(max-width: 860px), (pointer: coarse)').matches;
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, lite ? 1.5 : 2));
   renderer.outputEncoding = THREE.sRGBEncoding;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.05;
@@ -75,7 +76,7 @@
     mats[k] = m;
   });
 
-  const sphere = new THREE.Mesh(new THREE.SphereGeometry(1, 96, 64), mats.statuario);
+  const sphere = new THREE.Mesh(new THREE.SphereGeometry(1, lite ? 64 : 96, lite ? 40 : 64), mats.statuario);
   scene.add(sphere);
 
   const items = balls.map((el, i) => ({
