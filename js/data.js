@@ -12,7 +12,7 @@ window.PROJECTS = {
     meta: [['Type', 'Residential interior'], ['Space', 'Stairwell · foyer'], ['Scope', '3D model & render']],
     desc: 'A double-height stairwell treated as the home’s sculpture: cantilevered treads with under-step LED, a frameless glass balustrade and tall arched leaf-motif panels with integrated linear lights. Beneath the flight, walnut storage with display niches folds into a back-lit wash counter; across the room, capsule mirrors float on a burgundy lacquer wall.',
     highlights: ['Arched leaf-motif panels, 2-storey', 'Under-tread LED + glass balustrade', 'Walnut under-stair storage with niches', 'Capsule mirrors on burgundy lacquer'],
-    images: ['stair-leaf-panels', 'stair-wash-wide', 'stair-wash-front', 'living-oval-mirrors', 'foyer-entry']
+    images: ['stair-leaf-panels', 'stair-wash-wide', 'stair-wash-front', 'living-oval-mirrors']
   },
   dining: {
     num: '03', title: 'Dining &amp; <em>Family Lounge</em>', plain: 'Dining & Family Lounge',
@@ -38,9 +38,9 @@ window.PROJECTS = {
   bath: {
     num: '06', title: 'Stone &amp; <em>Onyx Baths</em>', plain: 'Stone & Onyx Baths',
     meta: [['Type', 'Residential interior'], ['Space', 'Bathrooms'], ['Scope', '3D model & render']],
-    desc: 'Two moods for wet spaces. One wraps in travertine-toned slabs with a verde onyx feature, smoked-glass partition, black fittings and a crescent back-lit mirror under a linear-lit ceiling. The other is a monolithic grey stone shower room with a warm-lit niche, wall-hung fixtures and a blush-toned vanity.',
-    highlights: ['Verde onyx feature slab', 'Smoked-glass wet-zone partition', 'Crescent back-lit mirror', 'Monolithic stone shower with lit niche'],
-    images: ['bath-marble-tub', 'bath-marble-vanity', 'bath-marble-ceiling', 'bath-stone-wc', 'bath-stone-shower', 'bath-stone-door']
+    desc: 'Two moods for wet spaces. One wraps in travertine-toned slabs with a verde onyx feature, smoked-glass partition, black fittings and a linear-lit ceiling. The other is a monolithic grey stone shower room with a warm-lit niche, wall-hung fixtures and a blush-toned vanity.',
+    highlights: ['Verde onyx feature slab', 'Smoked-glass wet-zone partition', 'Linear-lit ceiling with spot downlights', 'Monolithic stone shower with lit niche'],
+    images: ['bath-marble-tub', 'bath-marble-ceiling', 'bath-stone-wc', 'bath-stone-shower', 'bath-stone-door']
   },
   exterior: {
     num: '07', title: 'Residential <em>Elevations</em>', plain: 'Residential Elevations',
@@ -73,11 +73,9 @@ window.ARCHIVE = [
   ['ceiling-bedroom-cove', 'Ceiling', 'Scalloped cove ceiling'],
   ['tv-lounge', 'Living', 'Walnut TV lounge'],
   ['stair-wash-front', 'Staircase', 'Under-stair storage'],
-  ['bath-marble-vanity', 'Bath', 'Crescent-lit vanity'],
   ['living-tv-staircase', 'Living', 'TV wall toward the stair', 'w'],
   ['lounge-arch-tv', 'Dining', 'Arch TV wall & vanity'],
   ['bath-stone-wc', 'Bath', 'Stone WC & vanity', 't'],
-  ['foyer-entry', 'Staircase', 'Foyer toward entrance'],
   ['bath-marble-ceiling', 'Ceiling', 'Linear-lit bath ceiling'],
   ['living-tv-wall', 'Living', 'TV wall & door detail'],
   ['exterior-section', 'Exterior', 'Street section view', 'w']

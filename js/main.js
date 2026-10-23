@@ -249,7 +249,9 @@
       if (reduce) return;
       gsap.from(split.lines, {
         yPercent: 110, duration: 1.3, ease: 'expo.out', stagger: 0.1,
-        scrollTrigger: { trigger: el, start: 'top 85%' }
+        scrollTrigger: { trigger: el, start: 'top 85%' },
+        // drop the masks once the lines are in, so nothing stays clipped
+        onComplete: () => split.revert()
       });
     });
 
@@ -264,12 +266,15 @@
     // contact title
     gsap.from('.contact__line > span', {
       yPercent: 110, duration: 1.4, ease: 'expo.out', stagger: 0.12,
+      onComplete: () => $('.contact__title').classList.add('is-revealed'),
       scrollTrigger: { trigger: '.contact__title', start: 'top 85%' }
     });
     ScrollTrigger.refresh();
   }
 
-  // counters
+  // counters — the archive total always matches the data
+  $$('[data-archive-count]').forEach(el => (el.dataset.count = el.textContent = ARCHIVE.length));
+  $$('[data-archive-total]').forEach(el => (el.textContent = ARCHIVE.length));
   $$('[data-count]').forEach(el => {
     const end = +el.dataset.count, pad = +el.dataset.pad || 0, o = { v: end > 1000 ? end - 40 : 0 };
     ScrollTrigger.create({
@@ -520,13 +525,15 @@
       onComplete: () => { panel.classList.remove('is-open'); panel.setAttribute('aria-hidden', 'true'); lockScroll(false); }
     });
   }
+  // one observer for the panel gallery, re-pointed at the new figures each time a project is shown
+  const galleryIO = new IntersectionObserver(es => es.forEach(en => {
+    if (!en.isIntersecting) return;
+    gsap.fromTo(en.target, { y: 80, opacity: 0 }, { y: 0, opacity: 1, duration: 1.2, ease: 'expo.out' });
+    galleryIO.unobserve(en.target);
+  }), { root: pScroll, threshold: 0.1 });
   function observeGallery() {
-    const io = new IntersectionObserver(es => es.forEach(en => {
-      if (!en.isIntersecting) return;
-      gsap.fromTo(en.target, { y: 80, opacity: 0 }, { y: 0, opacity: 1, duration: 1.2, ease: 'expo.out' });
-      io.unobserve(en.target);
-    }), { root: pScroll, threshold: 0.1 });
-    $$('.panel__gallery figure').forEach(f => { gsap.set(f, { opacity: 0 }); io.observe(f); });
+    galleryIO.disconnect();
+    $$('.panel__gallery figure').forEach(f => { gsap.set(f, { opacity: 0 }); galleryIO.observe(f); });
   }
   $$('.card').forEach(c => {
     c.setAttribute('tabindex', '0');
